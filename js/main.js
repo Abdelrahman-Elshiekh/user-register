@@ -19,41 +19,44 @@ if (localStorage.getItem("container") === null) {
 }
 
 function register(){
- for (var i = 0; i < allregisters.length; i++) {
-   if (
-     allregisters[i].email == emailinput.value
-   ) {
-     none.classList.replace("d-none", "d-block");
-     sucss.classList.replace("d-block", "d-none");
-     non.classList.replace("d-block", "d-none");
-     return;
-   }
-
- }
- if (
-  nameinput.value == "" ||
-  emailinput.value == "" ||
-  passwordinput.value == ""
-) {
-  non.classList.replace("d-none", "d-block");
-  sucss.classList.replace("d-block", "d-none");
-   none.classList.replace("d-block", "d-none");
-}
-else {
-     var registers = {
-       name: nameinput.value,
-       email: emailinput.value,
-       password: passwordinput.value,
-     };
-     allregisters.push(registers);
-     console.log(allregisters);
-     localStorage.setItem("container", JSON.stringify(allregisters));
-     clearinputs();
-  sucss.classList.replace("d-none", "d-block");
-  non.classList.replace("d-block", "d-none");
-  none.classList.replace("d-block", "d-none");
-}
+if (
+  validateallinputs(nameinput) &&
+  validateallinputs(emailinput) &&
+  validateallinputs(passwordinput)
+){
+  for (var i = 0; i < allregisters.length; i++) {
+    if (allregisters[i].email == emailinput.value) {
+      none.classList.replace("d-none", "d-block");
+      sucss.classList.replace("d-block", "d-none");
+      non.classList.replace("d-block", "d-none");
+      return;
+    }
+  }
+  if (
+    nameinput.value == "" ||
+    emailinput.value == "" ||
+    passwordinput.value == ""
+  ) {
+    non.classList.replace("d-none", "d-block");
+    sucss.classList.replace("d-block", "d-none");
+    none.classList.replace("d-block", "d-none");
+  } else {
+    var registers = {
+      name: nameinput.value,
+      email: emailinput.value,
+      password: passwordinput.value,
+    };
+    allregisters.push(registers);
+    console.log(allregisters);
+    localStorage.setItem("container", JSON.stringify(allregisters));
+    clearinputs();
+    sucss.classList.replace("d-none", "d-block");
+    non.classList.replace("d-block", "d-none");
+    none.classList.replace("d-block", "d-none");
+  }
  
+}
+
 }
 
 function clearinputs(){
@@ -93,11 +96,28 @@ function display(){
 }
 
 
+function validateallinputs(element){
+  var val =element.value;
+  var id =element.id;
+  var regex = {
+    Name: /^[A-Z][a-z]{3,10}$/,
+    Email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    Password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/,
+  };
+  if (regex[id].test(val) == true) {
+    element.classList.add("is-valid");
+    element.classList.remove("is-invalid");
+     element.nextElementSibling.classList.replace("d-block", "d-none");
+   
+    return true;
+  } else {
+    element.classList.remove("is-valid");
+    element.classList.add("is-invalid");
+    element.nextElementSibling.classList.replace("d-none", "d-block");
+    
+    return false;
+  }
 
-
-
-
-
-
+}
 
 
